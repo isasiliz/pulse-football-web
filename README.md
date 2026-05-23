@@ -1,6 +1,6 @@
-# Pulse Football Landing
+# Pulse Football Web
 
-Landing estática y liviana para QR / campañas de Pulse Football.
+Sitio web público de Pulse Football para descargas, campañas y accesos rápidos.
 
 ## Estructura
 

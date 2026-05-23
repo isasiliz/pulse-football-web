@@ -111,8 +111,8 @@ function setupStoreLinks() {
   iosButton.href = CONFIG.iosUrl;
   androidButton.href = CONFIG.androidUrl;
 
-  iosButton.addEventListener("click", () => trackEvent("click_ios"));
-  androidButton.addEventListener("click", () => trackEvent("click_android"));
+  iosButton.addEventListener("click", () => trackEvent("click_ios", getTrackingParams()));
+  androidButton.addEventListener("click", () => trackEvent("click_android", getTrackingParams()));
 }
 
 function setupAnalytics() {
@@ -168,6 +168,36 @@ function updateStatus(messageKey, language) {
   status.textContent = dictionary[messageKey] || dictionary.noRedirect;
 }
 
+function getTrackingParams() {
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    source: params.get("source") || params.get("utm_source") || "direct",
+    medium: params.get("medium") || params.get("utm_medium") || "none",
+    campaign: params.get("campaign") || params.get("utm_campaign") || "none",
+  };
+}
+
+function trackLandingSource() {
+  const trackingParams = getTrackingParams();
+
+  trackEvent("landing_source_detected", trackingParams);
+}
+
+function shouldTrackRedirect(device) {
+  const key = `pulse-last-auto-redirect-${device}`;
+  const now = Date.now();
+  const lastRedirect = Number(sessionStorage.getItem(key) || 0);
+  const redirectCooldownMs = 15000;
+
+  if (now - lastRedirect < redirectCooldownMs) {
+    return false;
+  }
+
+  sessionStorage.setItem(key, String(now));
+  return true;
+}
+
 function handleRedirect(language) {
   const device = getDevice();
 
@@ -178,7 +208,9 @@ function handleRedirect(language) {
 
   if (device === "ios") {
     updateStatus("redirectIOS", language);
-    trackEvent("auto_redirect_ios");
+    if (shouldTrackRedirect("ios")) {
+      trackEvent("auto_redirect_ios", getTrackingParams());
+    }
 
     window.setTimeout(() => {
       window.location.href = CONFIG.iosUrl;
@@ -189,7 +221,9 @@ function handleRedirect(language) {
 
   if (device === "android") {
     updateStatus("redirectAndroid", language);
-    trackEvent("auto_redirect_android");
+    if (shouldTrackRedirect("android")) {
+      trackEvent("auto_redirect_android", getTrackingParams());
+    }
 
     window.setTimeout(() => {
       window.location.href = CONFIG.androidUrl;
@@ -208,5 +242,6 @@ function handleRedirect(language) {
   applyCopy(language);
   setupLanguageSwitch(language);
   setupStoreLinks();
+  trackLandingSource();
   handleRedirect(language);
 })();

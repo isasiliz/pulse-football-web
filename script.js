@@ -7,7 +7,7 @@ const CONFIG = {
 
   // Replace with your GA4 Measurement ID, for example: "G-ABC123XYZ9".
   // Leave empty until GA4 is created.
-  gaMeasurementId: "",
+  gaMeasurementId: "G-NME3JTTJEC",
 
   // Delay before redirecting mobile users.
   redirectDelayMs: 1200,

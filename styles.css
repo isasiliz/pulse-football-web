@@ -59,6 +59,9 @@ body::before {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  clip-path: inset(0 round 32px);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
   border: 1px solid var(--surface-border);
   border-radius: 32px;
   background:

@@ -58,6 +58,7 @@ body::before {
   text-align: center;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   border: 1px solid var(--surface-border);
   border-radius: 32px;
   background:
@@ -100,6 +101,37 @@ h1,
 .fallback-copy {
   position: relative;
   z-index: 1;
+}
+
+.language-switch {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+}
+
+.language-switch button {
+  border: 0;
+  cursor: pointer;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.62);
+  background: transparent;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.language-switch button.is-active {
+  color: #ffffff;
+  background: rgba(255,255,255,0.16);
 }
 
 .brand {

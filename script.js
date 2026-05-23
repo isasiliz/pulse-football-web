@@ -50,11 +50,20 @@ const COPY = {
   },
 };
 
+function isSupportedLanguage(language) {
+  return Object.prototype.hasOwnProperty.call(COPY, language);
+}
+
 function getLanguage() {
   const params = new URLSearchParams(window.location.search);
   const forcedLanguage = params.get("lang");
+  const savedLanguage = localStorage.getItem("pulse-language");
 
-  if (forcedLanguage === "en" || forcedLanguage === "es") {
+  if (isSupportedLanguage(savedLanguage)) {
+    return savedLanguage;
+  }
+
+  if (isSupportedLanguage(forcedLanguage)) {
     return forcedLanguage;
   }
 
@@ -71,6 +80,27 @@ function applyCopy(language) {
     if (dictionary[key]) {
       element.innerHTML = dictionary[key];
     }
+  });
+
+  document.querySelectorAll("[data-lang-option]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.langOption === language);
+  });
+}
+
+function setupLanguageSwitch(currentLanguage) {
+  document.querySelectorAll("[data-lang-option]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.langOption === currentLanguage);
+
+    button.addEventListener("click", () => {
+      const selectedLanguage = button.dataset.langOption;
+
+      if (!isSupportedLanguage(selectedLanguage)) return;
+
+      localStorage.setItem("pulse-language", selectedLanguage);
+      applyCopy(selectedLanguage);
+      updateStatus("noRedirect", selectedLanguage);
+      trackEvent("change_language", { language: selectedLanguage });
+    });
   });
 }
 
@@ -176,6 +206,7 @@ function handleRedirect(language) {
 
   setupAnalytics();
   applyCopy(language);
+  setupLanguageSwitch(language);
   setupStoreLinks();
   handleRedirect(language);
 })();

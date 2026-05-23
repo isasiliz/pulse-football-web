@@ -16,7 +16,7 @@ const CONFIG = {
 const COPY = {
   es: {
     eyebrow: "Pulse Football",
-    headline: "Predicciones, rankings y partidos en una sola app.",
+    headline: "Predicciones, rankings<br>y partidos<br>en una sola app.",
     subtitle:
       "Viví el Mundial de otra manera: seguí cada partido, hacé tus predicciones, competí con amigos y subí en el ranking.",
     pillLive: "Partidos en vivo",
@@ -33,7 +33,7 @@ const COPY = {
   },
   en: {
     eyebrow: "Pulse Football",
-    headline: "Predictions, rankings, and matches in one app.",
+    headline: "Predictions, rankings<br>and matches<br>in one app.",
     subtitle:
       "Experience the World Cup differently: follow every match, make your predictions, compete with friends, and climb the ranking.",
     pillLive: "Live matches",
